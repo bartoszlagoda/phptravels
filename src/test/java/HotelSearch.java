@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class HotelSearch {
 
     @Test
-    public void searchHotel() throws InterruptedException {
+    public void searchHotel() {
 
         // Otworzenie przeglądarki ze stroną do testowania
 
@@ -55,6 +55,85 @@ public class HotelSearch {
                         .findFirst()
 //                        .ifPresent(el -> el.click());
                         .ifPresent(WebElement::click);
+
+        // Wybranie liczby osób, które mają wyjechać
+        WebElement travellers = driver.findElement(By.name("travellers"));
+        travellers.click();
+        wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.name("adults"))));
+        WebElement adults = driver.findElement(By.name("adults"));
+        adults.clear();
+        adults.sendKeys("2");
+        WebElement childsPlusBtn = driver.findElement(By.xpath("//button[@id='childPlusBtn']"));
+        childsPlusBtn.click();
+        childsPlusBtn.click();
+        WebElement child = driver.findElement(By.xpath("//input[@id='childInput']"));
+
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertEquals(adults.getAttribute("value"),"2");
+        softAssert.assertEquals(child.getAttribute("value"),"2");
+
+        // kliknięcie przycisku Search
+        WebElement searchBtn = driver.findElement(By.xpath("//div[@class='col-md-2 form-group go-right col-xs-12 search-button']/button[@type='submit']"));
+        searchBtn.click();
+
+        // przejście do strony filter search
+        List<String> hotelNames = driver.findElements(By.xpath("//h4[@class='RTL go-text-right mt0 mb4 list_title']//b")).stream()
+                .map(el -> el.getAttribute("textContent"))
+                .collect(Collectors.toList());
+
+        System.out.println(hotelNames.size());
+//        hotelNames.forEach(el -> System.out.println(el));
+        hotelNames.forEach(System.out::println); // dla każdego elementu hotelNames wykonaj sout
+
+        softAssert.assertEquals("Jumeirah Beach Hotel",hotelNames.get(0));
+        softAssert.assertEquals("Oasis Beach Tower",hotelNames.get(1));
+        softAssert.assertEquals("Rose Rayhaan Rotana",hotelNames.get(2));
+        softAssert.assertEquals("Hyatt Regency Perth",hotelNames.get(3));
+
+
+        driver.quit();
+        softAssert.assertAll();
+    }
+
+    @Test
+    public void searchNotFoundInvolved(){
+        // Otworzenie przeglądarki ze stroną do testowania
+
+        WebDriverManager.chromedriver().setup();
+        WebDriver driver = new ChromeDriver();
+        // otworzenie okna przeglądarki na pełnym ekranie
+        driver.manage().window().maximize();
+        driver.get("http://www.kurs-selenium.pl/demo/");
+
+        // Wypełnienie pola 'Search by Hotel or City Name'
+
+        WebElement searchByCityName = driver.findElement(By.className("select2-chosen"));
+        searchByCityName.click();
+        WebElement inputCityName = driver.findElement(By.xpath("//div[@id='select2-drop']/div/input"));
+        inputCityName.sendKeys("Dubai");
+        FluentWait<WebDriver> wait = new FluentWait<>(driver);
+        // (WebDriverWait to ma wbudowane)
+        wait.ignoring(NoSuchElementException.class); // dodanie ignorowania NoSuchElementException
+        wait.withTimeout(Duration.ofSeconds(10));
+        wait.pollingEvery(Duration.ofSeconds(1)); // co 1 sekundę odpytuj
+        By dubaiLocatorChoosen = By.xpath("//div[@class='select2-result-label']/span[@class='select2-match' and contains(text(),'Dubai')]");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(dubaiLocatorChoosen));
+        driver.findElement(dubaiLocatorChoosen).click();
+
+        // Wybranie daty przyjazdu i odjazdu
+
+        WebElement checkInOnMainPage = driver.findElement(By.name("checkin"));
+        checkInOnMainPage.sendKeys("20/01/2024"); // wpisanie daty
+        // wyklikanie daty wyjazdu
+        WebElement checkOutOnMainPage = driver.findElement(By.name("checkout"));
+        checkOutOnMainPage.click();
+        driver.findElements(By.xpath("//td[@class='day ' and text()='25']"))
+                .stream()
+//                        .filter(el -> el.isDisplayed())
+                .filter(WebElement::isDisplayed)
+                .findFirst()
+//                        .ifPresent(el -> el.click());
+                .ifPresent(WebElement::click);
 
         // Wybranie liczby osób, które mają wyjechać
         WebElement travellers = driver.findElement(By.name("travellers"));
