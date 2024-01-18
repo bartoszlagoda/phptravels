@@ -105,20 +105,8 @@ public class HotelSearch {
         driver.manage().window().maximize();
         driver.get("http://www.kurs-selenium.pl/demo/");
 
-        // Wypełnienie pola 'Search by Hotel or City Name'
 
-        WebElement searchByCityName = driver.findElement(By.className("select2-chosen"));
-        searchByCityName.click();
-        WebElement inputCityName = driver.findElement(By.xpath("//div[@id='select2-drop']/div/input"));
-        inputCityName.sendKeys("Dubai");
         FluentWait<WebDriver> wait = new FluentWait<>(driver);
-        // (WebDriverWait to ma wbudowane)
-        wait.ignoring(NoSuchElementException.class); // dodanie ignorowania NoSuchElementException
-        wait.withTimeout(Duration.ofSeconds(10));
-        wait.pollingEvery(Duration.ofSeconds(1)); // co 1 sekundę odpytuj
-        By dubaiLocatorChoosen = By.xpath("//div[@class='select2-result-label']/span[@class='select2-match' and contains(text(),'Dubai')]");
-        wait.until(ExpectedConditions.visibilityOfElementLocated(dubaiLocatorChoosen));
-        driver.findElement(dubaiLocatorChoosen).click();
 
         // Wybranie daty przyjazdu i odjazdu
 
@@ -136,6 +124,7 @@ public class HotelSearch {
                 .ifPresent(WebElement::click);
 
         // Wybranie liczby osób, które mają wyjechać
+
         WebElement travellers = driver.findElement(By.name("travellers"));
         travellers.click();
         wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.name("adults"))));
@@ -160,17 +149,13 @@ public class HotelSearch {
                 .map(el -> el.getAttribute("textContent"))
                 .collect(Collectors.toList());
 
-        System.out.println(hotelNames.size());
-//        hotelNames.forEach(el -> System.out.println(el));
-        hotelNames.forEach(System.out::println); // dla każdego elementu hotelNames wykonaj sout
+        WebElement noResultsHeading = driver.findElement(By.xpath("//div[@class='itemscontainer']/h2"));
 
-        softAssert.assertEquals("Jumeirah Beach Hotel",hotelNames.get(0));
-        softAssert.assertEquals("Oasis Beach Tower",hotelNames.get(1));
-        softAssert.assertEquals("Rose Rayhaan Rotana",hotelNames.get(2));
-        softAssert.assertEquals("Hyatt Regency Perth",hotelNames.get(3));
+        softAssert.assertTrue(hotelNames.size() == 0);
+        softAssert.assertTrue(noResultsHeading.isDisplayed());
+        softAssert.assertEquals(noResultsHeading.getAttribute("textContent"),"No Results Found");
 
-
-        driver.quit();
         softAssert.assertAll();
+        driver.quit();
     }
 }
