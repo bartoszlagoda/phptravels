@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 public class SignUpTest {
 
     @Test
-    public void signUpl() {
+    public void signUpHappyPathTest() {
 
         // Otworzenie przeglądarki ze stroną do testowania
 
@@ -55,5 +55,45 @@ public class SignUpTest {
 
         SoftAssert softAssert = new SoftAssert();
         softAssert.assertTrue(welcomeHeader.getText().contains(lastname));
+    }
+
+    @Test
+    public void signUpUnhappyPathTest() {
+
+        // Otworzenie przeglądarki ze stroną do testowania
+
+        WebDriverManager.chromedriver().setup();
+        WebDriver driver = new ChromeDriver();
+        FluentWait<WebDriver> wait = new FluentWait<>(driver);
+        // otworzenie okna przeglądarki na pełnym ekranie
+        driver.manage().window().maximize();
+        driver.get("http://www.kurs-selenium.pl/demo/");
+
+        // Klikanie na element 'My accounti i 'Sign Up'
+        driver.findElements(By.xpath("//li[@id='li_myaccount']"))
+                .stream()
+                .filter(WebElement::isDisplayed)
+                .findFirst()
+                .ifPresent(WebElement::click);
+        driver.findElements(By.xpath("//a[text()='  Sign Up']")).get(1).click();
+
+        driver.findElement(By.xpath("//button[text()=' Sign Up']")).click();
+        FluentWait<WebDriver> fluentWait = new FluentWait<>(driver);
+        fluentWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='alert alert-danger']")));
+        List<String> dangerAlertsAfterSignIn = driver.findElements(By.xpath("//div[@class='alert alert-danger']/p"))
+                .stream()
+                .map(el -> el.getAttribute("textContent"))
+                .collect(Collectors.toList());
+
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertTrue(driver.findElement(By.xpath("//div[@class='alert alert-danger']")).isDisplayed());
+        softAssert.assertEquals(dangerAlertsAfterSignIn.get(0),"The Email field is required.");
+        softAssert.assertEquals(dangerAlertsAfterSignIn.get(1),"The Password field is required.");
+        softAssert.assertEquals(dangerAlertsAfterSignIn.get(2),"The Password field is required.");
+        softAssert.assertEquals(dangerAlertsAfterSignIn.get(3),"The First name field is required.");
+        softAssert.assertEquals(dangerAlertsAfterSignIn.get(4),"The Last Name field is required.");
+        driver.quit();
+        softAssert.assertAll();
+
     }
 }
