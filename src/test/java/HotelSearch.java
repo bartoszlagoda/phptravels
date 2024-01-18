@@ -34,5 +34,10 @@ public class HotelSearch {
         wait.until(ExpectedConditions.visibilityOfElementLocated(dubaiLocatorChoosen));
         driver.findElement(dubaiLocatorChoosen).click();
 
+        WebElement checkInOnMainPage = driver.findElement(By.name("checkin"));
+        checkInOnMainPage.sendKeys("20/01/2024");
+
+        WebElement checkOutOnMainPage = driver.findElement(By.name("checkout"));
+        checkOutOnMainPage.sendKeys("25/01/2024");
     }
 }
