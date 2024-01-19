@@ -49,41 +49,22 @@ public class HotelSearchTest extends BaseTest {
     @Test
     public void searchNotFoundInvolvedTest(){
 
-        // Wybranie daty przyjazdu i odjazdu
+        HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
+        ResultsPage resultsPage = new ResultsPage(driver);
 
-        WebElement checkInOnMainPage = driver.findElement(By.name("checkin"));
-        checkInOnMainPage.sendKeys("20/01/2024"); // wpisanie daty
-        // wyklikanie daty wyjazdu
-        WebElement checkOutOnMainPage = driver.findElement(By.name("checkout"));
-        checkOutOnMainPage.click();
-        driver.findElements(By.xpath("//td[@class='day ' and text()='25']"))
-                .stream()
-//                        .filter(el -> el.isDisplayed())
-                .filter(WebElement::isDisplayed)
-                .findFirst()
-//                        .ifPresent(el -> el.click());
-                .ifPresent(WebElement::click);
+        // Wybranie daty przyjazdu i odjazdu
+        hotelSearchPage.setTravelDate("22/02/2024","26/02/2024");
 
         // Wybranie liczby osób, które mają wyjechać
 
-        WebElement travellers = driver.findElement(By.name("travellers"));
-        travellers.click();
-        wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.name("adults"))));
-        WebElement adults = driver.findElement(By.name("adults"));
-        adults.clear();
-        adults.sendKeys("2");
-        WebElement childsPlusBtn = driver.findElement(By.xpath("//button[@id='childPlusBtn']"));
-        childsPlusBtn.click();
-        childsPlusBtn.click();
-        WebElement child = driver.findElement(By.xpath("//input[@id='childInput']"));
+        hotelSearchPage.setTravellers("2","3");
 
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertEquals(adults.getAttribute("value"),"2");
-        softAssert.assertEquals(child.getAttribute("value"),"2");
+        softAssert.assertEquals(hotelSearchPage.getAdultInput().getAttribute("value"),"2");
+        softAssert.assertEquals(hotelSearchPage.getChildInput().getAttribute("value"),"3");
 
         // kliknięcie przycisku Search
-        WebElement searchBtn = driver.findElement(By.xpath("//div[@class='col-md-2 form-group go-right col-xs-12 search-button']/button[@type='submit']"));
-        searchBtn.click();
+        hotelSearchPage.performSearch();
 
         // przejście do strony filter search
         List<String> hotelNames = driver.findElements(By.xpath("//h4[@class='RTL go-text-right mt0 mb4 list_title']//b")).stream()
@@ -92,7 +73,7 @@ public class HotelSearchTest extends BaseTest {
 
         WebElement noResultsHeading = driver.findElement(By.xpath("//div[@class='itemscontainer']/h2"));
 
-        softAssert.assertTrue(hotelNames.size() == 0);
+        softAssert.assertTrue(resultsPage.getHotelNames().size() == 0);
         softAssert.assertTrue(noResultsHeading.isDisplayed());
         softAssert.assertEquals(noResultsHeading.getAttribute("textContent"),"No Results Found");
 

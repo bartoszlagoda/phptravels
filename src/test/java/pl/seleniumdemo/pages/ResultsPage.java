@@ -13,6 +13,9 @@ public class ResultsPage {
     @FindBy(xpath = "//h4[@class='RTL go-text-right mt0 mb4 list_title']//b")
     private List<WebElement> hotelList;
 
+    @FindBy(xpath = "//div[@class='itemscontainer']/h2")
+    private List<WebElement> resultHeading;
+
     public ResultsPage(WebDriver driver){
         PageFactory.initElements(driver,this);
     }

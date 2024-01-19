@@ -39,6 +39,14 @@ public class HotelSearchPage {
         PageFactory.initElements(driver,this);
     }
 
+    public WebElement getAdultInput() {
+        return adultInput;
+    }
+
+    public WebElement getChildInput() {
+        return childInput;
+    }
+
     public void setCity(String cityName){
         searchHotelspan.click();
         searchHotelInput.sendKeys(cityName);
