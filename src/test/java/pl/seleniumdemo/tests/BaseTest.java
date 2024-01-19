@@ -6,6 +6,9 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import pl.seleniumdemo.pages.HotelSearchPage;
+
+import java.util.concurrent.TimeUnit;
 
 public class BaseTest {
 
@@ -18,6 +21,7 @@ public class BaseTest {
 
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         wait = new FluentWait<>(driver);
         // otworzenie okna przeglądarki na pełnym ekranie
         driver.manage().window().maximize();

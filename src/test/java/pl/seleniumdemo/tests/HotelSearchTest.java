@@ -14,11 +14,10 @@ import java.util.stream.Collectors;
 
 public class HotelSearchTest extends BaseTest {
 
-    HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
-
     @Test
     public void searchHotelTest() {
 
+        HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
         // Wypełnienie pola 'Search by Hotel or City Name'
         hotelSearchPage.setCity("Dubai");
         hotelSearchPage.setTravelDate("29/01/2024","02/02/2024");

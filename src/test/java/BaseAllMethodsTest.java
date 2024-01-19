@@ -5,7 +5,7 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
-public class BaseTest {
+public class BaseAllMethodsTest {
 
     protected WebDriver driver;
     protected FluentWait<WebDriver> wait;
