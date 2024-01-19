@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import pl.seleniumdemo.pages.HotelSearchPage;
+import pl.seleniumdemo.pages.ResultsPage;
 
 import java.time.Duration;
 import java.util.List;
@@ -18,6 +19,8 @@ public class HotelSearchTest extends BaseTest {
     public void searchHotelTest() {
 
         HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
+        ResultsPage resultsPage = new ResultsPage(driver);
+
         // Wypełnienie pola 'Search by Hotel or City Name'
         hotelSearchPage.setCity("Dubai");
         hotelSearchPage.setTravelDate("29/01/2024","02/02/2024");
@@ -29,9 +32,7 @@ public class HotelSearchTest extends BaseTest {
 //        softAssert.assertEquals(child.getAttribute("value"),"2");
 
 //         przejście do strony filter search
-        List<String> hotelNames = driver.findElements(By.xpath("//h4[@class='RTL go-text-right mt0 mb4 list_title']//b")).stream()
-                .map(el -> el.getAttribute("textContent"))
-                .collect(Collectors.toList());
+        List<String> hotelNames = resultsPage.getHotelNames();
 
         System.out.println(hotelNames.size());
 //        hotelNames.forEach(el -> System.out.println(el));
