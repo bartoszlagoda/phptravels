@@ -1,9 +1,7 @@
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.testng.annotations.Test;
@@ -13,21 +11,14 @@ import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class HotelSearch {
+public class HotelSearchTest extends BaseTest{
 
     @Test
-    public void searchHotel() {
-
-        // Otworzenie przeglądarki ze stroną do testowania
-
-        WebDriverManager.chromedriver().setup();
-        WebDriver driver = new ChromeDriver();
-        // otworzenie okna przeglądarki na pełnym ekranie
-        driver.manage().window().maximize();
-        driver.get("http://www.kurs-selenium.pl/demo/");
+    public void searchHotelTest() {
 
         // Wypełnienie pola 'Search by Hotel or City Name'
 
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("select2-chosen")));
         WebElement searchByCityName = driver.findElement(By.className("select2-chosen"));
         searchByCityName.click();
         WebElement inputCityName = driver.findElement(By.xpath("//div[@id='select2-drop']/div/input"));
@@ -90,23 +81,11 @@ public class HotelSearch {
         softAssert.assertEquals("Rose Rayhaan Rotana",hotelNames.get(2));
         softAssert.assertEquals("Hyatt Regency Perth",hotelNames.get(3));
 
-
-        driver.quit();
         softAssert.assertAll();
     }
 
     @Test
-    public void searchNotFoundInvolved(){
-        // Otworzenie przeglądarki ze stroną do testowania
-
-        WebDriverManager.chromedriver().setup();
-        WebDriver driver = new ChromeDriver();
-        // otworzenie okna przeglądarki na pełnym ekranie
-        driver.manage().window().maximize();
-        driver.get("http://www.kurs-selenium.pl/demo/");
-
-
-        FluentWait<WebDriver> wait = new FluentWait<>(driver);
+    public void searchNotFoundInvolvedTest(){
 
         // Wybranie daty przyjazdu i odjazdu
 
@@ -156,6 +135,5 @@ public class HotelSearch {
         softAssert.assertEquals(noResultsHeading.getAttribute("textContent"),"No Results Found");
 
         softAssert.assertAll();
-        driver.quit();
     }
 }

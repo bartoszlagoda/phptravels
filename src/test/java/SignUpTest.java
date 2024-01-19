@@ -6,6 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
@@ -15,19 +17,10 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class SignUpTest {
+public class SignUpTest extends BaseTest{
 
     @Test
     public void signUpHappyPathTest() {
-
-        // Otworzenie przeglądarki ze stroną do testowania
-
-        WebDriverManager.chromedriver().setup();
-        WebDriver driver = new ChromeDriver();
-        FluentWait<WebDriver> wait = new FluentWait<>(driver);
-        // otworzenie okna przeglądarki na pełnym ekranie
-        driver.manage().window().maximize();
-        driver.get("http://www.kurs-selenium.pl/demo/");
 
         // Klikanie na element 'My accounti i 'Sign Up'
         driver.findElements(By.xpath("//li[@id='li_myaccount']"))
@@ -55,19 +48,50 @@ public class SignUpTest {
 
         SoftAssert softAssert = new SoftAssert();
         softAssert.assertTrue(welcomeHeader.getText().contains(lastname));
+
+        softAssert.assertAll();
+    }
+
+    @Test
+    public void signUpInvalidEmailTest() {
+
+        // Klikanie na element 'My accounti i 'Sign Up'
+        driver.findElements(By.xpath("//li[@id='li_myaccount']"))
+                .stream()
+                .filter(WebElement::isDisplayed)
+                .findFirst()
+                .ifPresent(WebElement::click);
+        driver.findElements(By.xpath("//a[text()='  Sign Up']")).get(1).click();
+
+        String lastname = "Lagoda";
+        int randomNumber = (int) (Math.random()*1000);
+        String email = "testeroprogramowania" + randomNumber;
+
+        // Wypełnianie pól do rejestracji
+        driver.findElement(By.name("firstname")).sendKeys("Bartosz");
+        driver.findElement(By.name("lastname")).sendKeys(lastname);
+        driver.findElement(By.name("phone")).sendKeys("123456789");
+        driver.findElement(By.name("email")).sendKeys(email);
+        driver.findElement(By.name("password")).sendKeys("Password1234");
+        driver.findElement(By.name("confirmpassword")).sendKeys("Password1234");
+        driver.findElement(By.xpath("//button[text()=' Sign Up']")).click();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='alert alert-danger']/p")));
+
+        List<String> dangerAlertsAfterSignIn = driver.findElements(By.xpath("//div[@class='alert alert-danger']/p"))
+                .stream()
+                .map(el -> el.getAttribute("textContent"))
+                .collect(Collectors.toList());
+
+        SoftAssert softAssert = new SoftAssert();
+//        softAssert.assertTrue(dangerAlertsAfterSignIn.contains("The Email field must contain a valid email address."));
+        softAssert.assertEquals(dangerAlertsAfterSignIn.get(0),"The Email field must contain a valid email address.");
+
+        softAssert.assertAll();
     }
 
     @Test
     public void signUpUnhappyPathTest() {
-
-        // Otworzenie przeglądarki ze stroną do testowania
-
-        WebDriverManager.chromedriver().setup();
-        WebDriver driver = new ChromeDriver();
-        FluentWait<WebDriver> wait = new FluentWait<>(driver);
-        // otworzenie okna przeglądarki na pełnym ekranie
-        driver.manage().window().maximize();
-        driver.get("http://www.kurs-selenium.pl/demo/");
 
         // Klikanie na element 'My accounti i 'Sign Up'
         driver.findElements(By.xpath("//li[@id='li_myaccount']"))
@@ -92,7 +116,7 @@ public class SignUpTest {
         softAssert.assertEquals(dangerAlertsAfterSignIn.get(2),"The Password field is required.");
         softAssert.assertEquals(dangerAlertsAfterSignIn.get(3),"The First name field is required.");
         softAssert.assertEquals(dangerAlertsAfterSignIn.get(4),"The Last Name field is required.");
-        driver.quit();
+
         softAssert.assertAll();
 
     }
