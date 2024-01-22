@@ -1,9 +1,14 @@
 package pl.seleniumdemo.pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+
+import java.util.concurrent.TimeUnit;
 
 // Strona główna z wyszukiwaniem
 public class HotelSearchPage {
@@ -13,9 +18,6 @@ public class HotelSearchPage {
 
     @FindBy(xpath = "//div[@id='select2-drop']/div/input")
     private WebElement searchHotelInput;
-
-    @FindBy(xpath = "//div[@class='select2-result-label']/span[@class='select2-match' and contains(text(),'Dubai')]")
-    private WebElement hotelMatch;
 
     @FindBy(name = "checkin")
     private WebElement checkInInput;
@@ -47,8 +49,11 @@ public class HotelSearchPage {
     @FindBy(xpath = "//button[text()=' Search']")
     private WebElement searchButton;
 
+    private WebDriver driver;
+
     public HotelSearchPage(WebDriver driver){
         PageFactory.initElements(driver,this);
+        this.driver = driver;
     }
 
     public WebElement getAdultInput() {
@@ -60,9 +65,12 @@ public class HotelSearchPage {
     }
 
     public void setCity(String cityName){
+        FluentWait<WebDriver> wait = new FluentWait<>(driver);
         searchHotelspan.click();
         searchHotelInput.sendKeys(cityName);
-        hotelMatch.click();
+        String xpath = String.format("//div[@class='select2-result-label']/span[@class='select2-match' and contains(text(),'%s')]",cityName);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
+        driver.findElement(By.xpath(xpath)).click();
     }
 
     public void setTravelDate(String checkin, String checkout){

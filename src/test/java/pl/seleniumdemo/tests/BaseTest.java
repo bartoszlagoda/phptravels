@@ -20,7 +20,7 @@ public class BaseTest {
         // Otworzenie przeglądarki ze stroną do testowania
 
         WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
+        driver = getDriver();
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
         wait = new FluentWait<>(driver);
         // otworzenie okna przeglądarki na pełnym ekranie
@@ -31,5 +31,15 @@ public class BaseTest {
     @AfterMethod
     public void tearDown(){
         driver.quit();
+    }
+
+    private WebDriver getDriver(){
+        if(driver == null){
+            //zainicjowanie chromedrivera (jeśli webdriver nie jest zainstalowany, manager go zainstaluje za nas)
+            WebDriverManager.chromedriver().setup();
+            // uruchomienie przeglądarki Chrome
+            driver = new ChromeDriver();
+        }
+        return driver;
     }
 }
