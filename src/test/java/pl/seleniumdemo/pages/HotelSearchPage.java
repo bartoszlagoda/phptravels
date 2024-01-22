@@ -71,29 +71,32 @@ public class HotelSearchPage {
         return childInput;
     }
 
-    public void setCity(String cityName){
+    public HotelSearchPage setCity(String cityName){
         FluentWait<WebDriver> wait = new FluentWait<>(driver);
         searchHotelspan.click();
         searchHotelInput.sendKeys(cityName);
         String xpath = String.format("//div[@class='select2-result-label']/span[@class='select2-match' and contains(text(),'%s')]",cityName);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
         driver.findElement(By.xpath(xpath)).click();
+        return this;
     }
 
-    public void setTravelDate(String checkin, String checkout){
+    public HotelSearchPage setTravelDate(String checkin, String checkout){
         checkInInput.sendKeys(checkin);
         checkoutInput.sendKeys(checkout);
+        return this;
     }
 
-    public void setTravellersByInput(String adultNumber, String childNumber){
+    public HotelSearchPage setTravellersByInput(String adultNumber, String childNumber){
         travellers.click();
         adultInput.clear();
         adultInput.sendKeys(adultNumber);
         childInput.clear();
         childInput.sendKeys(childNumber);
+        return this;
     }
 
-    public void setTravellersByBtn(int adultsToAdd, int childToAdd){
+    public HotelSearchPage setTravellersByBtn(int adultsToAdd, int childToAdd){
         travellers.click();
 
         changeNumberOfTravellersBtnClick(adultMinusBtn,Integer.parseInt(adultInput.getAttribute("value")));
@@ -102,6 +105,7 @@ public class HotelSearchPage {
         changeNumberOfTravellersBtnClick(childMinusBtn,Integer.parseInt(childInput.getAttribute("value")));
         changeNumberOfTravellersBtnClick(childPlusBtn,childToAdd);
 
+        return this;
     }
 
     private void changeNumberOfTravellersBtnClick(WebElement travellerBtn, int numberToAdd){
@@ -118,8 +122,9 @@ public class HotelSearchPage {
                 .ifPresent(WebElement::click);
         signUpLink.get(1).click();
     }
-
-    public void performSearch(){
+    // uruchomienie metody spowoduje przejście do nowej strony, którą obsługuje ResultPage
+    public ResultsPage performSearch(){
         searchButton.click();
+        return new ResultsPage(driver);
     }
 }
