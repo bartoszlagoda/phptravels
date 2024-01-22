@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import pl.seleniumdemo.pages.HotelSearchPage;
+import pl.seleniumdemo.pages.SignUpPage;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,22 +18,24 @@ public class SignUpTest extends BaseTest {
     @Test
     public void signUpHappyPathTest() {
 
-        // Klikanie na element 'My accounti i 'Sign Up'
-        HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
-        hotelSearchPage.openSignUpForm();
-
+        // Stworzenie zmiennych potrzebnych w dalszych krokach testu
         String lastname = "Lagoda";
         int randomNumber = (int) (Math.random()*1000);
         String email = "testeroprogramowania" + randomNumber + "@testeroprogramowania.pl";
 
+        // Klikanie na element 'My accounti i 'Sign Up'
+        HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
+        hotelSearchPage.openSignUpForm();
+
         // Wypełnianie pól do rejestracji
-        driver.findElement(By.name("firstname")).sendKeys("Bartosz");
-        driver.findElement(By.name("lastname")).sendKeys(lastname);
-        driver.findElement(By.name("phone")).sendKeys("123456789");
-        driver.findElement(By.name("email")).sendKeys(email);
-        driver.findElement(By.name("password")).sendKeys("Password1234");
-        driver.findElement(By.name("confirmpassword")).sendKeys("Password1234");
-        driver.findElement(By.xpath("//button[text()=' Sign Up']")).click();
+        SignUpPage signUpPage = new SignUpPage(driver);
+        signUpPage.setFirstname("Bartosz");
+        signUpPage.setLastname(lastname);
+        signUpPage.setPhone("123456789");
+        signUpPage.setEmail(email);
+        signUpPage.setPassword("Password1234");
+        signUpPage.setConfirmPassword("Password1234");
+        signUpPage.signUp();
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h3[@class='RTL']")));
         WebElement welcomeHeader = driver.findElement(By.xpath("//h3[@class='RTL']"));
