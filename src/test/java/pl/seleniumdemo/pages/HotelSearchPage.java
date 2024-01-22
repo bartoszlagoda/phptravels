@@ -81,25 +81,17 @@ public class HotelSearchPage {
     public void setTravellersByBtn(int adultsToAdd, int childToAdd){
         travellers.click();
 
-//        int defaultAdultNumber = Integer.parseInt(adultInput.getAttribute("textContent"));
         System.out.println("Pobralem wartosc doroslych: " + adultInput.getAttribute("value"));
-        travellersMinusBtnClick(adultMinusBtn,Integer.parseInt(adultInput.getAttribute("value")));
-        travellersPlusBtnClick(adultPlusBtn,adultsToAdd);
+        changeNumberOfTravellersBtnClick(adultMinusBtn,Integer.parseInt(adultInput.getAttribute("value")));
+        changeNumberOfTravellersBtnClick(adultPlusBtn,adultsToAdd);
 
-        int defaultChildNumber = Integer.parseInt(childInput.getAttribute("value"));
-        travellersMinusBtnClick(childMinusBtn,defaultChildNumber);
-        travellersPlusBtnClick(childPlusBtn,childToAdd);
+        changeNumberOfTravellersBtnClick(childMinusBtn,Integer.parseInt(childInput.getAttribute("value")));
+        changeNumberOfTravellersBtnClick(childPlusBtn,childToAdd);
 
     }
 
-    private void travellersPlusBtnClick(WebElement travellerBtn, int numberToAdd){
+    private void changeNumberOfTravellersBtnClick(WebElement travellerBtn, int numberToAdd){
         for (int i=0; i< numberToAdd; i++){
-            travellerBtn.click();
-        }
-    }
-
-    private void travellersMinusBtnClick(WebElement travellerBtn, int numberToSub){
-        for (int i=0; i< numberToSub; i++){
             travellerBtn.click();
         }
     }

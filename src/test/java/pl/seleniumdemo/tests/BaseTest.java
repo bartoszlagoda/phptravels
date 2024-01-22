@@ -21,7 +21,7 @@ public class BaseTest {
 
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
         wait = new FluentWait<>(driver);
         // otworzenie okna przeglądarki na pełnym ekranie
         driver.manage().window().maximize();
