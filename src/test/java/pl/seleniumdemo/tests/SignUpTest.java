@@ -8,8 +8,10 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import pl.seleniumdemo.pages.HotelSearchPage;
+import pl.seleniumdemo.pages.LoggedUserPage;
 import pl.seleniumdemo.pages.SignUpPage;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,12 +38,13 @@ public class SignUpTest extends BaseTest {
         signUpPage.setPassword("Password1234");
         signUpPage.setConfirmPassword("Password1234");
         signUpPage.signUp();
-
+        // sprawdzanie rezultatu logowania
+        LoggedUserPage loggedUserPage = new LoggedUserPage(driver);
+        wait.withTimeout(Duration.ofSeconds(1));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h3[@class='RTL']")));
-        WebElement welcomeHeader = driver.findElement(By.xpath("//h3[@class='RTL']"));
 
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertTrue(welcomeHeader.getText().contains(lastname));
+        softAssert.assertTrue(loggedUserPage.getHeadingText().contains(lastname));
 
         softAssert.assertAll();
     }
