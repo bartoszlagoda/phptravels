@@ -8,6 +8,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 // Strona główna z wyszukiwaniem
@@ -48,6 +49,12 @@ public class HotelSearchPage {
 
     @FindBy(xpath = "//button[text()=' Search']")
     private WebElement searchButton;
+
+    @FindBy(xpath = "//li[@id='li_myaccount']")
+    private List<WebElement> myAccountLink;
+
+    @FindBy(xpath = "//a[text()='  Sign Up']")
+    private List<WebElement> signUpLink;
 
     private WebDriver driver;
 
@@ -101,6 +108,15 @@ public class HotelSearchPage {
         for (int i=0; i< numberToAdd; i++){
             travellerBtn.click();
         }
+    }
+
+    public void openSignUpForm(){
+        myAccountLink
+                .stream()
+                .filter(WebElement::isDisplayed)
+                .findFirst()
+                .ifPresent(WebElement::click);
+        signUpLink.get(1).click();
     }
 
     public void performSearch(){
