@@ -63,6 +63,16 @@ public class SignUpPage {
         confirmpasswordInput.sendKeys(confirmPassword);
     }
 
+    public void fillSignUpForm(String firstName, String lastname, String phone, String email, String password, String confirmPassword){
+        setFirstname(firstName);
+        setLastname(lastname);
+        setPhone(phone);
+        setEmail(email);
+        setPassword(password);
+        setConfirmPassword(confirmPassword);
+        signUp();
+    }
+
     public List<String> getErrors(){
         return alertDanger
                 .stream()

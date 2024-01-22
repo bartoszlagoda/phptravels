@@ -61,13 +61,7 @@ public class SignUpTest extends BaseTest {
 
         // Wypełnianie pól do rejestracji
         SignUpPage signUpPage = new SignUpPage(driver);
-        signUpPage.setFirstname("Bartosz");
-        signUpPage.setLastname(lastname);
-        signUpPage.setPhone("123456789");
-        signUpPage.setEmail(email);
-        signUpPage.setPassword("Password1234");
-        signUpPage.setConfirmPassword("Password1234");
-        signUpPage.signUp();
+        signUpPage.fillSignUpForm("Bartosz",lastname,"123456789",email,"Password1234","Password1234");
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='alert alert-danger']/p")));
 
