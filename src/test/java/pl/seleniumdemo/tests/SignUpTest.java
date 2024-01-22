@@ -12,7 +12,6 @@ import pl.seleniumdemo.pages.SignUpPage;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class SignUpTest extends BaseTest {
 
@@ -89,6 +88,7 @@ public class SignUpTest extends BaseTest {
         List<String> dangerAlertsAfterSignIn = signUpPage.getErrors();
 
         SoftAssert softAssert = new SoftAssert();
+
         softAssert.assertTrue(driver.findElement(By.xpath("//div[@class='alert alert-danger']")).isDisplayed());
         softAssert.assertEquals(dangerAlertsAfterSignIn.get(0),"The Email field is required.");
         softAssert.assertEquals(dangerAlertsAfterSignIn.get(1),"The Password field is required.");
