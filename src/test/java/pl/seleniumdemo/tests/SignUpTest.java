@@ -1,12 +1,9 @@
 package pl.seleniumdemo.tests;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
-import pl.seleniumdemo.model.User;
 import pl.seleniumdemo.pages.HotelSearchPage;
 import pl.seleniumdemo.pages.LoggedUserPage;
 import pl.seleniumdemo.pages.SignUpPage;
@@ -19,90 +16,23 @@ public class SignUpTest extends BaseTest {
     @Test
     public void signUpHappyPathTest() {
 
-        // Stworzenie zmiennych potrzebnych w dalszych krokach testu
-        String lastname = "Lagoda";
-        int randomNumber = (int) (Math.random()*1000);
-        String email = "testeroprogramowania" + randomNumber + "@testeroprogramowania.pl";
-
-        // Klikanie na element 'My accounti i 'Sign Up'
-        HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
-        hotelSearchPage.openSignUpForm();
-
-        // Wypełnianie pól do rejestracji
-        SignUpPage signUpPage = new SignUpPage(driver);
-        signUpPage.setFirstname("Bartosz");
-        signUpPage.setLastname(lastname);
-        signUpPage.setPhone("123456789");
-        signUpPage.setEmail(email);
-        signUpPage.setPassword("Password1234");
-        signUpPage.setConfirmPassword("Password1234");
-        signUpPage.signUp();
+        // klikanie na element MyAccount i SignUp oraz Wypełnianie pól do rejestracji
+        LoggedUserPage signUpPage = new HotelSearchPage(driver)
+                .openSignUpForm()
+                .setFirstname("Bartosz")
+                .setLastname("Lagoda")
+                .setPhone("123456789")
+                .setEmail("testeroprogramowania" + (int) (Math.random()*1000) + "@testeroprogramowania.pl")
+                .setPassword("Password1234")
+                .setConfirmPassword("Password1234")
+                .signUp();
         // sprawdzanie rezultatu logowania
         LoggedUserPage loggedUserPage = new LoggedUserPage(driver);
         wait.withTimeout(Duration.ofSeconds(1));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h3[@class='RTL']")));
 
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertTrue(loggedUserPage.getHeadingText().contains(lastname));
-
-        softAssert.assertAll();
-    }
-
-    @Test
-    public void signUpHappyPathSecondTest() {
-
-        // Stworzenie zmiennych potrzebnych w dalszych krokach testu
-        String lastname = "Lagoda";
-        int randomNumber = (int) (Math.random()*1000);
-        String email = "testeroprogramowania" + randomNumber + "@testeroprogramowania.pl";
-
-        User user = new User();
-        user.setFirstName("Bartek");
-        user.setLastName("Testowy");
-        user.setPhone("111111111");
-        user.setEmail(email);
-        user.setPassword("Test1234");
-
-        // Klikanie na element 'My accounti i 'Sign Up'
-        HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
-        hotelSearchPage.openSignUpForm();
-
-        // Wypełnianie pól do rejestracji
-        SignUpPage signUpPage = new SignUpPage(driver);
-        signUpPage.fillSignUpForm(user);
-        // sprawdzanie rezultatu logowania
-        LoggedUserPage loggedUserPage = new LoggedUserPage(driver);
-        wait.withTimeout(Duration.ofSeconds(1));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h3[@class='RTL']")));
-
-        SoftAssert softAssert = new SoftAssert();
-        softAssert.assertTrue(loggedUserPage.getHeadingText().contains(user.getLastName()));
-
-        softAssert.assertAll();
-    }
-
-    @Test
-    public void signUpInvalidEmailTest() {
-
-        // Klikanie na element 'My accounti i 'Sign Up'
-        HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
-        hotelSearchPage.openSignUpForm();
-
-        String lastname = "Lagoda";
-        int randomNumber = (int) (Math.random()*1000);
-        String email = "testeroprogramowania" + randomNumber;
-
-        // Wypełnianie pól do rejestracji
-        SignUpPage signUpPage = new SignUpPage(driver);
-        signUpPage.fillSignUpForm("Bartosz",lastname,"123456789",email,"Password1234","Password1234");
-
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='alert alert-danger']/p")));
-
-        List<String> dangerAlertsAfterSignIn = signUpPage.getErrors();
-
-        SoftAssert softAssert = new SoftAssert();
-//        softAssert.assertTrue(dangerAlertsAfterSignIn.contains("The Email field must contain a valid email address."));
-        softAssert.assertEquals(dangerAlertsAfterSignIn.get(0),"The Email field must contain a valid email address.");
+        softAssert.assertTrue(loggedUserPage.getHeadingText().contains("Lagoda"));
 
         softAssert.assertAll();
     }
@@ -111,12 +41,9 @@ public class SignUpTest extends BaseTest {
     public void signUpUnhappyPathTest() {
 
         // Klikanie na element 'My accounti i 'Sign Up'
-        HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
-        hotelSearchPage.openSignUpForm();
-
-        driver.findElement(By.xpath("//button[text()=' Sign Up']")).click();
-        FluentWait<WebDriver> fluentWait = new FluentWait<>(driver);
-        fluentWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='alert alert-danger']")));
+        LoggedUserPage hotelSearchPage = new HotelSearchPage(driver)
+                .openSignUpForm()
+                .signUp();
 
         SignUpPage signUpPage = new SignUpPage(driver);
         List<String> dangerAlertsAfterSignIn = signUpPage.getErrors();

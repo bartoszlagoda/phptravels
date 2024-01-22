@@ -114,13 +114,15 @@ public class HotelSearchPage {
         }
     }
 
-    public void openSignUpForm(){
+    public SignUpPage openSignUpForm(){
         myAccountLink
                 .stream()
                 .filter(WebElement::isDisplayed)
                 .findFirst()
                 .ifPresent(WebElement::click);
         signUpLink.get(1).click();
+
+        return new SignUpPage(driver);
     }
     // uruchomienie metody spowoduje przejście do nowej strony, którą obsługuje ResultPage
     public ResultsPage performSearch(){

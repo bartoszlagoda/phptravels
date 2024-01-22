@@ -5,6 +5,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
 import pl.seleniumdemo.model.User;
 
 import java.util.List;
@@ -36,62 +38,53 @@ public class SignUpPage {
     @FindBy(xpath = "//div[@class='alert alert-danger']/p")
     private List<WebElement> alertDanger;
 
+    private WebDriver driver;
+
     public SignUpPage (WebDriver driver){
         PageFactory.initElements(driver,this);
     }
 
-    public void setFirstname(String firstname){
+    public SignUpPage setFirstname(String firstname){
         firstnameInput.sendKeys(firstname);
+        return this;
     }
 
-    public void setLastname(String lastname){
+    public SignUpPage setLastname(String lastname){
         lastnameInput.sendKeys(lastname);
+        return this;
     }
 
-    public void setPhone(String phone){
+    public SignUpPage setPhone(String phone){
         phoneInput.sendKeys(phone);
+        return this;
     }
 
-    public void setEmail(String email){
+    public SignUpPage setEmail(String email){
         emailInput.sendKeys(email);
+        return this;
     }
 
-    public void setPassword(String password){
+    public SignUpPage setPassword(String password){
         passwordInput.sendKeys(password);
+        return this;
     }
 
-    public void setConfirmPassword(String confirmPassword){
+    public SignUpPage setConfirmPassword(String confirmPassword){
         confirmpasswordInput.sendKeys(confirmPassword);
-    }
-
-    public void fillSignUpForm(String firstName, String lastname, String phone, String email, String password, String confirmPassword){
-        setFirstname(firstName);
-        setLastname(lastname);
-        setPhone(phone);
-        setEmail(email);
-        setPassword(password);
-        setConfirmPassword(confirmPassword);
-        signUp();
-    }
-
-    public void fillSignUpForm(User user){
-        setFirstname(user.getFirstName());
-        setLastname(user.getLastName());
-        setPhone(user.getPhone());
-        setEmail(user.getEmail());
-        setPassword(user.getPassword());
-        setConfirmPassword(user.getPassword());
-        signUp();
+        return this;
     }
 
     public List<String> getErrors(){
+        FluentWait<WebDriver> wait = new FluentWait<>(driver);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='alert alert-danger']")));
         return alertDanger
                 .stream()
                 .map(el -> el.getAttribute("textContent"))
                 .collect(Collectors.toList());
     }
 
-    public void signUp(){
+    public LoggedUserPage signUp(){
         signUpBtn.click();
+        return new LoggedUserPage(driver);
     }
 }

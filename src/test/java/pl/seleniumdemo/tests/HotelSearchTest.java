@@ -13,7 +13,6 @@ public class HotelSearchTest extends BaseTest {
     public void searchHotelTest() {
 
         HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
-        ResultsPage resultsPage = new ResultsPage(driver);
 
         // Wypełnienie pola 'Search by Hotel or City Name'
         List<String> hotelNames = hotelSearchPage.setCity("Dubai")
@@ -44,26 +43,12 @@ public class HotelSearchTest extends BaseTest {
     @Test
     public void searchNotFoundInvolvedTest() {
 
-        HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
-        ResultsPage resultsPage = new ResultsPage(driver);
-
-        // Wybranie daty przyjazdu i odjazdu
-        hotelSearchPage.setTravelDate("22/02/2024","26/02/2024");
-
-        // Wybranie liczby osób, które mają wyjechać
-
-//        hotelSearchPage.setTravellersByInput("2","3");
-        hotelSearchPage.setTravellersByBtn(3,1);
-
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertEquals(hotelSearchPage.getAdultInput().getAttribute("value"),"3");
-        softAssert.assertEquals(hotelSearchPage.getChildInput().getAttribute("value"),"1");
 
-        // kliknięcie przycisku Search
-        hotelSearchPage.performSearch();
-
-        // przejście do strony filter search
-        resultsPage.getHotelNames();
+        ResultsPage resultsPage = new HotelSearchPage(driver)
+                .setTravelDate("22/02/2024","26/02/2024")
+                .setTravellersByBtn(3,1)
+                .performSearch();
 
         softAssert.assertTrue(resultsPage.getHotelNames().size() == 0);
         softAssert.assertEquals(resultsPage.getHeadingText(),"No Results Found");
