@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import pl.seleniumdemo.model.User;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -70,6 +71,16 @@ public class SignUpPage {
         setEmail(email);
         setPassword(password);
         setConfirmPassword(confirmPassword);
+        signUp();
+    }
+
+    public void fillSignUpForm(User user){
+        setFirstname(user.getFirstName());
+        setLastname(user.getLastName());
+        setPhone(user.getPhone());
+        setEmail(user.getEmail());
+        setPassword(user.getPassword());
+        setConfirmPassword(user.getPassword());
         signUp();
     }
 

@@ -6,6 +6,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
+import pl.seleniumdemo.model.User;
 import pl.seleniumdemo.pages.HotelSearchPage;
 import pl.seleniumdemo.pages.LoggedUserPage;
 import pl.seleniumdemo.pages.SignUpPage;
@@ -43,6 +44,39 @@ public class SignUpTest extends BaseTest {
 
         SoftAssert softAssert = new SoftAssert();
         softAssert.assertTrue(loggedUserPage.getHeadingText().contains(lastname));
+
+        softAssert.assertAll();
+    }
+
+    @Test
+    public void signUpHappyPathSecondTest() {
+
+        // Stworzenie zmiennych potrzebnych w dalszych krokach testu
+        String lastname = "Lagoda";
+        int randomNumber = (int) (Math.random()*1000);
+        String email = "testeroprogramowania" + randomNumber + "@testeroprogramowania.pl";
+
+        User user = new User();
+        user.setFirstName("Bartek");
+        user.setLastName("Testowy");
+        user.setPhone("111111111");
+        user.setEmail(email);
+        user.setPassword("Test1234");
+
+        // Klikanie na element 'My accounti i 'Sign Up'
+        HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
+        hotelSearchPage.openSignUpForm();
+
+        // Wypełnianie pól do rejestracji
+        SignUpPage signUpPage = new SignUpPage(driver);
+        signUpPage.fillSignUpForm(user);
+        // sprawdzanie rezultatu logowania
+        LoggedUserPage loggedUserPage = new LoggedUserPage(driver);
+        wait.withTimeout(Duration.ofSeconds(1));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h3[@class='RTL']")));
+
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertTrue(loggedUserPage.getHeadingText().contains(user.getLastName()));
 
         softAssert.assertAll();
     }
