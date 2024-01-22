@@ -81,7 +81,6 @@ public class HotelSearchPage {
     public void setTravellersByBtn(int adultsToAdd, int childToAdd){
         travellers.click();
 
-        System.out.println("Pobralem wartosc doroslych: " + adultInput.getAttribute("value"));
         changeNumberOfTravellersBtnClick(adultMinusBtn,Integer.parseInt(adultInput.getAttribute("value")));
         changeNumberOfTravellersBtnClick(adultPlusBtn,adultsToAdd);
 
