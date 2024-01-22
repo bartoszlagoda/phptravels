@@ -14,7 +14,7 @@ public class ResultsPage {
     private List<WebElement> hotelList;
 
     @FindBy(xpath = "//div[@class='itemscontainer']/h2")
-    private List<WebElement> resultHeading;
+    private WebElement resultHeading;
 
     public ResultsPage(WebDriver driver){
         PageFactory.initElements(driver,this);
@@ -24,5 +24,9 @@ public class ResultsPage {
         return hotelList.stream()
                 .map(el -> el.getAttribute("textContent"))
                 .collect(Collectors.toList());
+    }
+
+    public String getHeadingText(){
+        return resultHeading.getText();
     }
 }

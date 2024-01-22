@@ -1,17 +1,11 @@
 package pl.seleniumdemo.tests;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import pl.seleniumdemo.pages.HotelSearchPage;
 import pl.seleniumdemo.pages.ResultsPage;
 
-import java.time.Duration;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class HotelSearchTest extends BaseTest {
 
@@ -24,7 +18,7 @@ public class HotelSearchTest extends BaseTest {
         // Wypełnienie pola 'Search by Hotel or City Name'
         hotelSearchPage.setCity("Dubai");
         hotelSearchPage.setTravelDate("29/01/2024","02/02/2024");
-        hotelSearchPage.setTravellers("2","2");
+        hotelSearchPage.setTravellersByInput("2","2");
         hotelSearchPage.performSearch();
 
         SoftAssert softAssert = new SoftAssert();
@@ -47,7 +41,7 @@ public class HotelSearchTest extends BaseTest {
     }
 
     @Test
-    public void searchNotFoundInvolvedTest(){
+    public void searchNotFoundInvolvedTest() {
 
         HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
         ResultsPage resultsPage = new ResultsPage(driver);
@@ -57,25 +51,21 @@ public class HotelSearchTest extends BaseTest {
 
         // Wybranie liczby osób, które mają wyjechać
 
-        hotelSearchPage.setTravellers("2","3");
+//        hotelSearchPage.setTravellersByInput("2","3");
+        hotelSearchPage.setTravellersByBtn(3,1);
 
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertEquals(hotelSearchPage.getAdultInput().getAttribute("value"),"2");
-        softAssert.assertEquals(hotelSearchPage.getChildInput().getAttribute("value"),"3");
+        softAssert.assertEquals(hotelSearchPage.getAdultInput().getAttribute("value"),"3");
+        softAssert.assertEquals(hotelSearchPage.getChildInput().getAttribute("value"),"1");
 
         // kliknięcie przycisku Search
         hotelSearchPage.performSearch();
 
         // przejście do strony filter search
-        List<String> hotelNames = driver.findElements(By.xpath("//h4[@class='RTL go-text-right mt0 mb4 list_title']//b")).stream()
-                .map(el -> el.getAttribute("textContent"))
-                .collect(Collectors.toList());
-
-        WebElement noResultsHeading = driver.findElement(By.xpath("//div[@class='itemscontainer']/h2"));
+        resultsPage.getHotelNames();
 
         softAssert.assertTrue(resultsPage.getHotelNames().size() == 0);
-        softAssert.assertTrue(noResultsHeading.isDisplayed());
-        softAssert.assertEquals(noResultsHeading.getAttribute("textContent"),"No Results Found");
+        softAssert.assertEquals(resultsPage.getHeadingText(),"No Results Found");
 
         softAssert.assertAll();
     }
