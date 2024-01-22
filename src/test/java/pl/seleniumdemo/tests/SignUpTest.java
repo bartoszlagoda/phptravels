@@ -84,10 +84,9 @@ public class SignUpTest extends BaseTest {
         driver.findElement(By.xpath("//button[text()=' Sign Up']")).click();
         FluentWait<WebDriver> fluentWait = new FluentWait<>(driver);
         fluentWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='alert alert-danger']")));
-        List<String> dangerAlertsAfterSignIn = driver.findElements(By.xpath("//div[@class='alert alert-danger']/p"))
-                .stream()
-                .map(el -> el.getAttribute("textContent"))
-                .collect(Collectors.toList());
+
+        SignUpPage signUpPage = new SignUpPage(driver);
+        List<String> dangerAlertsAfterSignIn = signUpPage.getErrors();
 
         SoftAssert softAssert = new SoftAssert();
         softAssert.assertTrue(driver.findElement(By.xpath("//div[@class='alert alert-danger']")).isDisplayed());
