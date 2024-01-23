@@ -73,6 +73,7 @@ public class HotelSearchPage {
 
     public HotelSearchPage setCity(String cityName){
         FluentWait<WebDriver> wait = new FluentWait<>(driver);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='Search by Hotel or City Name']")));
         searchHotelspan.click();
         searchHotelInput.sendKeys(cityName);
         String xpath = String.format("//div[@class='select2-result-label']/span[@class='select2-match' and contains(text(),'%s')]",cityName);

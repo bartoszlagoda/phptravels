@@ -42,6 +42,7 @@ public class SignUpPage {
 
     public SignUpPage (WebDriver driver){
         PageFactory.initElements(driver,this);
+        this.driver = driver;
     }
 
     public SignUpPage setFirstname(String firstname){

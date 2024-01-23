@@ -20,8 +20,8 @@ public class BaseTest {
         // Otworzenie przeglądarki ze stroną do testowania
 
         WebDriverManager.chromedriver().setup();
-        driver = getDriver();
-        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        driver = new ChromeDriver();
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         wait = new FluentWait<>(driver);
         // otworzenie okna przeglądarki na pełnym ekranie
         driver.manage().window().maximize();

@@ -46,6 +46,7 @@ public class SignUpTest extends BaseTest {
                 .signUp();
 
         SignUpPage signUpPage = new SignUpPage(driver);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='alert alert-danger']")));
         List<String> dangerAlertsAfterSignIn = signUpPage.getErrors();
 
         SoftAssert softAssert = new SoftAssert();
