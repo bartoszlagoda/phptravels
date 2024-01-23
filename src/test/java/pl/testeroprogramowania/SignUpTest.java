@@ -1,6 +1,9 @@
+package pl.testeroprogramowania;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.testng.annotations.Test;
@@ -9,10 +12,17 @@ import org.testng.asserts.SoftAssert;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SignUpTest extends BaseAllMethodsTest {
+public class SignUpTest {
 
     @Test
     public void signUpHappyPathTest() {
+
+        WebDriver driver = new ChromeDriver();
+        // otworzenie okna przeglądarki na pełnym ekranie
+        driver.manage().window().maximize();
+        driver.get("http://www.kurs-selenium.pl/demo/");
+        // Wypełnienie pola 'Search by Hotel or City Name'
+        FluentWait<WebDriver> wait = new FluentWait<>(driver);
 
         // Klikanie na element 'My accounti i 'Sign Up'
         driver.findElements(By.xpath("//li[@id='li_myaccount']"))
@@ -41,11 +51,19 @@ public class SignUpTest extends BaseAllMethodsTest {
         SoftAssert softAssert = new SoftAssert();
         softAssert.assertTrue(welcomeHeader.getText().contains(lastname));
 
+        driver.quit();
         softAssert.assertAll();
     }
 
     @Test
     public void signUpInvalidEmailTest() {
+
+        WebDriver driver = new ChromeDriver();
+        // otworzenie okna przeglądarki na pełnym ekranie
+        driver.manage().window().maximize();
+        driver.get("http://www.kurs-selenium.pl/demo/");
+        // Wypełnienie pola 'Search by Hotel or City Name'
+        FluentWait<WebDriver> wait = new FluentWait<>(driver);
 
         // Klikanie na element 'My accounti i 'Sign Up'
         driver.findElements(By.xpath("//li[@id='li_myaccount']"))
@@ -79,11 +97,19 @@ public class SignUpTest extends BaseAllMethodsTest {
 //        softAssert.assertTrue(dangerAlertsAfterSignIn.contains("The Email field must contain a valid email address."));
         softAssert.assertEquals(dangerAlertsAfterSignIn.get(0),"The Email field must contain a valid email address.");
 
+        driver.quit();
         softAssert.assertAll();
     }
 
     @Test
     public void signUpUnhappyPathTest() {
+
+        WebDriver driver = new ChromeDriver();
+        // otworzenie okna przeglądarki na pełnym ekranie
+        driver.manage().window().maximize();
+        driver.get("http://www.kurs-selenium.pl/demo/");
+        // Wypełnienie pola 'Search by Hotel or City Name'
+        FluentWait<WebDriver> wait = new FluentWait<>(driver);
 
         // Klikanie na element 'My accounti i 'Sign Up'
         driver.findElements(By.xpath("//li[@id='li_myaccount']"))
@@ -109,6 +135,7 @@ public class SignUpTest extends BaseAllMethodsTest {
         softAssert.assertEquals(dangerAlertsAfterSignIn.get(3),"The First name field is required.");
         softAssert.assertEquals(dangerAlertsAfterSignIn.get(4),"The Last Name field is required.");
 
+        driver.quit();
         softAssert.assertAll();
 
     }

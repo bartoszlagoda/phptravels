@@ -1,5 +1,8 @@
 package pl.seleniumdemo.tests;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import pl.seleniumdemo.pages.HotelSearchPage;
@@ -11,6 +14,15 @@ public class HotelSearchTest extends BaseTest {
 
     @Test
     public void searchHotelTest() {
+
+        // Otworzenie przeglądarki ze stroną do testowania
+
+        WebDriverManager.chromedriver().setup();
+        driver = new ChromeDriver();
+        wait = new FluentWait<>(driver);
+        // otworzenie okna przeglądarki na pełnym ekranie
+        driver.manage().window().maximize();
+        driver.get("http://www.kurs-selenium.pl/demo/");
 
         HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
         ResultsPage resultsPage = new ResultsPage(driver);
@@ -38,11 +50,21 @@ public class HotelSearchTest extends BaseTest {
         softAssert.assertEquals("Rose Rayhaan Rotana",hotelNames.get(2));
         softAssert.assertEquals("Hyatt Regency Perth",hotelNames.get(3));
 
+        driver.quit();
         softAssert.assertAll();
     }
 
     @Test
     public void searchNotFoundInvolvedTest() {
+
+        // Otworzenie przeglądarki ze stroną do testowania
+
+        WebDriverManager.chromedriver().setup();
+        driver = new ChromeDriver();
+        wait = new FluentWait<>(driver);
+        // otworzenie okna przeglądarki na pełnym ekranie
+        driver.manage().window().maximize();
+        driver.get("http://www.kurs-selenium.pl/demo/");
 
         HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
         ResultsPage resultsPage = new ResultsPage(driver);
@@ -68,6 +90,7 @@ public class HotelSearchTest extends BaseTest {
         softAssert.assertTrue(resultsPage.getHotelNames().size() == 0);
         softAssert.assertEquals(resultsPage.getHeadingText(),"No Results Found");
 
+        driver.quit();
         softAssert.assertAll();
     }
 }
