@@ -21,7 +21,7 @@ public class SignUpTest extends BaseTest {
 
         // Stworzenie zmiennych potrzebnych w dalszych krokach testu
         String lastname = "Lagoda";
-        int randomNumber = (int) (Math.random()*1000);
+        int randomNumber = (int) (Math.random() * 1000);
         String email = "testeroprogramowania" + randomNumber + "@testeroprogramowania.pl";
 
         // Klikanie na element 'My accounti i 'Sign Up'
@@ -53,7 +53,7 @@ public class SignUpTest extends BaseTest {
 
         // Stworzenie zmiennych potrzebnych w dalszych krokach testu
         String lastname = "Lagoda";
-        int randomNumber = (int) (Math.random()*1000);
+        int randomNumber = (int) (Math.random() * 1000);
         String email = "testeroprogramowania" + randomNumber + "@testeroprogramowania.pl";
 
         User user = new User();
@@ -89,12 +89,12 @@ public class SignUpTest extends BaseTest {
         hotelSearchPage.openSignUpForm();
 
         String lastname = "Lagoda";
-        int randomNumber = (int) (Math.random()*1000);
+        int randomNumber = (int) (Math.random() * 1000);
         String email = "testeroprogramowania" + randomNumber;
 
         // Wypełnianie pól do rejestracji
         SignUpPage signUpPage = new SignUpPage(driver);
-        signUpPage.fillSignUpForm("Bartosz",lastname,"123456789",email,"Password1234","Password1234");
+        signUpPage.fillSignUpForm("Bartosz", lastname, "123456789", email, "Password1234", "Password1234");
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='alert alert-danger']/p")));
 
@@ -102,7 +102,7 @@ public class SignUpTest extends BaseTest {
 
         SoftAssert softAssert = new SoftAssert();
 //        softAssert.assertTrue(dangerAlertsAfterSignIn.contains("The Email field must contain a valid email address."));
-        softAssert.assertEquals(dangerAlertsAfterSignIn.get(0),"The Email field must contain a valid email address.");
+        softAssert.assertEquals(dangerAlertsAfterSignIn.get(0), "The Email field must contain a valid email address.");
 
         softAssert.assertAll();
     }
@@ -124,11 +124,11 @@ public class SignUpTest extends BaseTest {
         SoftAssert softAssert = new SoftAssert();
 
         softAssert.assertTrue(driver.findElement(By.xpath("//div[@class='alert alert-danger']")).isDisplayed());
-        softAssert.assertEquals(dangerAlertsAfterSignIn.get(0),"The Email field is required.");
-        softAssert.assertEquals(dangerAlertsAfterSignIn.get(1),"The Password field is required.");
-        softAssert.assertEquals(dangerAlertsAfterSignIn.get(2),"The Password field is required.");
-        softAssert.assertEquals(dangerAlertsAfterSignIn.get(3),"The First name field is required.");
-        softAssert.assertEquals(dangerAlertsAfterSignIn.get(4),"The Last Name field is required.");
+        softAssert.assertEquals(dangerAlertsAfterSignIn.get(0), "The Email field is required.");
+        softAssert.assertEquals(dangerAlertsAfterSignIn.get(1), "The Password field is required.");
+        softAssert.assertEquals(dangerAlertsAfterSignIn.get(2), "The Password field is required.");
+        softAssert.assertEquals(dangerAlertsAfterSignIn.get(3), "The First name field is required.");
+        softAssert.assertEquals(dangerAlertsAfterSignIn.get(4), "The Last Name field is required.");
 
         softAssert.assertAll();
 
