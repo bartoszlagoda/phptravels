@@ -1,5 +1,7 @@
 package pl.seleniumdemo.pages;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,7 +11,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 // Strona główna z wyszukiwaniem
 public class HotelSearchPage {
@@ -58,6 +59,8 @@ public class HotelSearchPage {
 
     private WebDriver driver;
 
+    private static final Logger logger = LogManager.getLogger();
+
     public HotelSearchPage(WebDriver driver){
         PageFactory.initElements(driver,this);
         this.driver = driver;
@@ -77,6 +80,7 @@ public class HotelSearchPage {
         searchHotelInput.sendKeys(cityName);
         String xpath = String.format("//div[@class='select2-result-label']/span[@class='select2-match' and contains(text(),'%s')]",cityName);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
+        logger.info("Setting city: " + cityName);
         driver.findElement(By.xpath(xpath)).click();
         return this;
     }
@@ -84,6 +88,7 @@ public class HotelSearchPage {
     public HotelSearchPage setTravelDate(String checkin, String checkout){
         checkInInput.sendKeys(checkin);
         checkoutInput.sendKeys(checkout);
+        logger.info("Setting dates check-in: " + checkin + ", check-out: " + checkout);
         return this;
     }
 
@@ -93,6 +98,7 @@ public class HotelSearchPage {
         adultInput.sendKeys(adultNumber);
         childInput.clear();
         childInput.sendKeys(childNumber);
+        logger.info("Adding adults: " + adultNumber + ", kids: " + childNumber);
         return this;
     }
 
@@ -104,6 +110,8 @@ public class HotelSearchPage {
 
         changeNumberOfTravellersBtnClick(childMinusBtn,Integer.parseInt(childInput.getAttribute("value")));
         changeNumberOfTravellersBtnClick(childPlusBtn,childToAdd);
+
+        logger.info("Adding adults: " + adultsToAdd + ", kids: " + childToAdd);
 
         return this;
     }
@@ -121,10 +129,12 @@ public class HotelSearchPage {
                 .findFirst()
                 .ifPresent(WebElement::click);
         signUpLink.get(1).click();
+        logger.info("Sign up forms opened");
     }
     // uruchomienie metody spowoduje przejście do nowej strony, którą obsługuje ResultPage
     public ResultsPage performSearch(){
         searchButton.click();
+        logger.info("Performing search");
         return new ResultsPage(driver);
     }
 }
