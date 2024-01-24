@@ -9,6 +9,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
+import pl.seleniumdemo.utils.SeleniumHelper;
 
 import java.util.List;
 
@@ -93,7 +94,9 @@ public class HotelSearchPage {
     }
 
     public HotelSearchPage setTravellersByInput(String adultNumber, String childNumber) {
+        SeleniumHelper.waitForElementToExist(driver,By.name("travellers"));
         travellers.click();
+        SeleniumHelper.waitForElementToBeVisible(driver,adultInput);
         adultInput.clear();
         adultInput.sendKeys(adultNumber);
         childInput.clear();
@@ -134,6 +137,7 @@ public class HotelSearchPage {
 
     // uruchomienie metody spowoduje przejście do nowej strony, którą obsługuje ResultPage
     public ResultsPage performSearch() {
+        SeleniumHelper.waitForElementToExist(driver,By.xpath("//button[text()=' Search']"));
         searchButton.click();
         logger.info("Performing search");
         return new ResultsPage(driver);
