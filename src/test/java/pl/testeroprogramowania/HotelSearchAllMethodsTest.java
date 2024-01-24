@@ -1,7 +1,12 @@
+package pl.testeroprogramowania;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
@@ -9,13 +14,17 @@ import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class HotelSearchAllMethodsTest extends BaseAllMethodsTest {
+public class HotelSearchAllMethodsTest {
 
     @Test
     public void searchHotelTest() {
 
+        WebDriver driver = new ChromeDriver();
+        // otworzenie okna przeglądarki na pełnym ekranie
+        driver.manage().window().maximize();
+        driver.get("http://www.kurs-selenium.pl/demo/");
         // Wypełnienie pola 'Search by Hotel or City Name'
-
+        FluentWait<WebDriver> wait = new FluentWait<>(driver);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='Search by Hotel or City Name']")));
         WebElement searchByCityName = driver.findElement(By.className("select2-chosen"));
         searchByCityName.click();
@@ -84,8 +93,15 @@ public class HotelSearchAllMethodsTest extends BaseAllMethodsTest {
     @Test
     public void searchNotFoundInvolvedTest(){
 
-        // Wybranie daty przyjazdu i odjazdu
+        WebDriver driver = new ChromeDriver();
+        // otworzenie okna przeglądarki na pełnym ekranie
+        driver.manage().window().maximize();
+        driver.get("http://www.kurs-selenium.pl/demo/");
+        // Wypełnienie pola 'Search by Hotel or City Name'
+        FluentWait<WebDriver> wait = new FluentWait<>(driver);
 
+        // Wybranie daty przyjazdu i odjazdu
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("checkin")));
         WebElement checkInOnMainPage = driver.findElement(By.name("checkin"));
         checkInOnMainPage.sendKeys("20/01/2024"); // wpisanie daty
         // wyklikanie daty wyjazdu
