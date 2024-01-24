@@ -16,5 +16,29 @@ The presented repository is used to test the phptravels website as an extension 
 * TestNG 7.6.0
 * Google Chrome 120.0.6099.200
 * log4j 2.22.1
+## Log4j
+### Sources
+* [Maven dependency](https://logging.apache.org/log4j/2.x/maven-artifacts.html)
+### log4j support
+#### Creating an object of the log4j class
+```
+private static final Logger logger = LogManager.getLogger();
+```
+#### Creating logs
+```
+logger.trace("Trace");
+logger.debug("Debug");
+logger.info("Info");
+logger.warn("Warn");
+logger.error("Error");
+logger.fatal("Fatal");
+```
+#### Loggin levels
+1. FATAL - show only logs for fatal
+2. ERROR - show only logs for fatal and error
+3. WARN - show only logs for fatal, error and warn
+4. INFO - show only logs for fatal, error, warn and info
+5. DEBUG - show only logs for fatal, error, warn, info and debug
+6. TRACE - show all logs mentioned above
 
 

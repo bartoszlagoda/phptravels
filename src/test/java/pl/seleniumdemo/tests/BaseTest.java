@@ -6,6 +6,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import pl.seleniumdemo.utils.DriverFactory;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class BaseTest {
@@ -14,10 +15,10 @@ public class BaseTest {
     protected FluentWait<WebDriver> wait;
 
     @BeforeMethod
-    public void setup() {
+    public void setup() throws IOException {
         // Otworzenie przeglądarki ze stroną do testowania
 
-        driver = DriverFactory.getDriver("chrome");
+        driver = DriverFactory.getDriver();
         driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         wait = new FluentWait<>(driver);
         // otworzenie okna przeglądarki na pełnym ekranie
