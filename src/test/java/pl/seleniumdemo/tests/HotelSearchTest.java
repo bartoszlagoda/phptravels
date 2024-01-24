@@ -38,7 +38,6 @@ public class HotelSearchTest extends BaseTest {
         softAssert.assertEquals("Rose Rayhaan Rotana",hotelNames.get(2));
         softAssert.assertEquals("Hyatt Regency Perth",hotelNames.get(3));
 
-        driver.quit();
         softAssert.assertAll();
     }
 
@@ -69,7 +68,6 @@ public class HotelSearchTest extends BaseTest {
         softAssert.assertTrue(resultsPage.getHotelNames().size() == 0);
         softAssert.assertEquals(resultsPage.getHeadingText(),"No Results Found");
 
-        driver.quit();
         softAssert.assertAll();
     }
 }
