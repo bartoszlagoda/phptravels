@@ -13,7 +13,7 @@ public class BaseAllMethodsTest {
     protected FluentWait<WebDriver> wait;
 
     @BeforeMethod
-    public void setup(){
+    public void setup() {
         // Otworzenie przeglądarki ze stroną do testowania
 
         WebDriverManager.chromedriver().setup();
@@ -25,7 +25,7 @@ public class BaseAllMethodsTest {
     }
 
     @AfterMethod
-    public void tearDown(){
+    public void tearDown() {
         driver.quit();
     }
 }

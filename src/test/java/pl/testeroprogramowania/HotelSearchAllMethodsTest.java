@@ -46,12 +46,12 @@ public class HotelSearchAllMethodsTest {
         WebElement checkOutOnMainPage = driver.findElement(By.name("checkout"));
         checkOutOnMainPage.click();
         driver.findElements(By.xpath("//td[@class='day ' and text()='25']"))
-                        .stream()
+                .stream()
 //                        .filter(el -> el.isDisplayed())
-                        .filter(WebElement::isDisplayed)
-                        .findFirst()
+                .filter(WebElement::isDisplayed)
+                .findFirst()
 //                        .ifPresent(el -> el.click());
-                        .ifPresent(WebElement::click);
+                .ifPresent(WebElement::click);
 
         // Wybranie liczby osób, które mają wyjechać
         WebElement travellers = driver.findElement(By.name("travellers"));
@@ -66,8 +66,8 @@ public class HotelSearchAllMethodsTest {
         WebElement child = driver.findElement(By.xpath("//input[@id='childInput']"));
 
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertEquals(adults.getAttribute("value"),"2");
-        softAssert.assertEquals(child.getAttribute("value"),"2");
+        softAssert.assertEquals(adults.getAttribute("value"), "2");
+        softAssert.assertEquals(child.getAttribute("value"), "2");
 
         // kliknięcie przycisku Search
         WebElement searchBtn = driver.findElement(By.xpath("//div[@class='col-md-2 form-group go-right col-xs-12 search-button']/button[@type='submit']"));
@@ -82,16 +82,16 @@ public class HotelSearchAllMethodsTest {
 //        hotelNames.forEach(el -> System.out.println(el));
         hotelNames.forEach(System.out::println); // dla każdego elementu hotelNames wykonaj sout
 
-        softAssert.assertEquals("Jumeirah Beach Hotel",hotelNames.get(0));
-        softAssert.assertEquals("Oasis Beach Tower",hotelNames.get(1));
-        softAssert.assertEquals("Rose Rayhaan Rotana",hotelNames.get(2));
-        softAssert.assertEquals("Hyatt Regency Perth",hotelNames.get(3));
+        softAssert.assertEquals("Jumeirah Beach Hotel", hotelNames.get(0));
+        softAssert.assertEquals("Oasis Beach Tower", hotelNames.get(1));
+        softAssert.assertEquals("Rose Rayhaan Rotana", hotelNames.get(2));
+        softAssert.assertEquals("Hyatt Regency Perth", hotelNames.get(3));
 
         softAssert.assertAll();
     }
 
     @Test
-    public void searchNotFoundInvolvedTest(){
+    public void searchNotFoundInvolvedTest() {
 
         WebDriver driver = new ChromeDriver();
         // otworzenie okna przeglądarki na pełnym ekranie
@@ -129,8 +129,8 @@ public class HotelSearchAllMethodsTest {
         WebElement child = driver.findElement(By.xpath("//input[@id='childInput']"));
 
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertEquals(adults.getAttribute("value"),"2");
-        softAssert.assertEquals(child.getAttribute("value"),"2");
+        softAssert.assertEquals(adults.getAttribute("value"), "2");
+        softAssert.assertEquals(child.getAttribute("value"), "2");
 
         // kliknięcie przycisku Search
         WebElement searchBtn = driver.findElement(By.xpath("//div[@class='col-md-2 form-group go-right col-xs-12 search-button']/button[@type='submit']"));
@@ -145,7 +145,7 @@ public class HotelSearchAllMethodsTest {
 
         softAssert.assertTrue(hotelNames.size() == 0);
         softAssert.assertTrue(noResultsHeading.isDisplayed());
-        softAssert.assertEquals(noResultsHeading.getAttribute("textContent"),"No Results Found");
+        softAssert.assertEquals(noResultsHeading.getAttribute("textContent"), "No Results Found");
 
         softAssert.assertAll();
     }

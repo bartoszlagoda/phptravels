@@ -33,19 +33,19 @@ public class HotelSearchPage {
     @FindBy(xpath = "//input[@id='adultInput']")
     private WebElement adultInput;
 
-    @FindBy(xpath="//button[@id='adultPlusBtn']")
+    @FindBy(xpath = "//button[@id='adultPlusBtn']")
     private WebElement adultPlusBtn;
 
-    @FindBy(xpath="//button[@id='adultMinusBtn']")
+    @FindBy(xpath = "//button[@id='adultMinusBtn']")
     private WebElement adultMinusBtn;
 
     @FindBy(xpath = "//input[@id='childInput']")
     private WebElement childInput;
 
-    @FindBy(xpath="//button[@id='childPlusBtn']")
+    @FindBy(xpath = "//button[@id='childPlusBtn']")
     private WebElement childPlusBtn;
 
-    @FindBy(xpath="//button[@id='childMinusBtn']")
+    @FindBy(xpath = "//button[@id='childMinusBtn']")
     private WebElement childMinusBtn;
 
     @FindBy(xpath = "//button[text()=' Search']")
@@ -61,8 +61,8 @@ public class HotelSearchPage {
 
     private static final Logger logger = LogManager.getLogger();
 
-    public HotelSearchPage(WebDriver driver){
-        PageFactory.initElements(driver,this);
+    public HotelSearchPage(WebDriver driver) {
+        PageFactory.initElements(driver, this);
         this.driver = driver;
     }
 
@@ -74,25 +74,25 @@ public class HotelSearchPage {
         return childInput;
     }
 
-    public HotelSearchPage setCity(String cityName){
+    public HotelSearchPage setCity(String cityName) {
         FluentWait<WebDriver> wait = new FluentWait<>(driver);
         searchHotelspan.click();
         searchHotelInput.sendKeys(cityName);
-        String xpath = String.format("//div[@class='select2-result-label']/span[@class='select2-match' and contains(text(),'%s')]",cityName);
+        String xpath = String.format("//div[@class='select2-result-label']/span[@class='select2-match' and contains(text(),'%s')]", cityName);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
         logger.info("Setting city: " + cityName);
         driver.findElement(By.xpath(xpath)).click();
         return this;
     }
 
-    public HotelSearchPage setTravelDate(String checkin, String checkout){
+    public HotelSearchPage setTravelDate(String checkin, String checkout) {
         checkInInput.sendKeys(checkin);
         checkoutInput.sendKeys(checkout);
         logger.info("Setting dates check-in: " + checkin + ", check-out: " + checkout);
         return this;
     }
 
-    public HotelSearchPage setTravellersByInput(String adultNumber, String childNumber){
+    public HotelSearchPage setTravellersByInput(String adultNumber, String childNumber) {
         travellers.click();
         adultInput.clear();
         adultInput.sendKeys(adultNumber);
@@ -102,27 +102,27 @@ public class HotelSearchPage {
         return this;
     }
 
-    public HotelSearchPage setTravellersByBtn(int adultsToAdd, int childToAdd){
+    public HotelSearchPage setTravellersByBtn(int adultsToAdd, int childToAdd) {
         travellers.click();
 
-        changeNumberOfTravellersBtnClick(adultMinusBtn,Integer.parseInt(adultInput.getAttribute("value")));
-        changeNumberOfTravellersBtnClick(adultPlusBtn,adultsToAdd);
+        changeNumberOfTravellersBtnClick(adultMinusBtn, Integer.parseInt(adultInput.getAttribute("value")));
+        changeNumberOfTravellersBtnClick(adultPlusBtn, adultsToAdd);
 
-        changeNumberOfTravellersBtnClick(childMinusBtn,Integer.parseInt(childInput.getAttribute("value")));
-        changeNumberOfTravellersBtnClick(childPlusBtn,childToAdd);
+        changeNumberOfTravellersBtnClick(childMinusBtn, Integer.parseInt(childInput.getAttribute("value")));
+        changeNumberOfTravellersBtnClick(childPlusBtn, childToAdd);
 
         logger.info("Adding adults: " + adultsToAdd + ", kids: " + childToAdd);
 
         return this;
     }
 
-    private void changeNumberOfTravellersBtnClick(WebElement travellerBtn, int numberToAdd){
-        for (int i=0; i< numberToAdd; i++){
+    private void changeNumberOfTravellersBtnClick(WebElement travellerBtn, int numberToAdd) {
+        for (int i = 0; i < numberToAdd; i++) {
             travellerBtn.click();
         }
     }
 
-    public void openSignUpForm(){
+    public void openSignUpForm() {
         myAccountLink
                 .stream()
                 .filter(WebElement::isDisplayed)
@@ -131,8 +131,9 @@ public class HotelSearchPage {
         signUpLink.get(1).click();
         logger.info("Sign up forms opened");
     }
+
     // uruchomienie metody spowoduje przejście do nowej strony, którą obsługuje ResultPage
-    public ResultsPage performSearch(){
+    public ResultsPage performSearch() {
         searchButton.click();
         logger.info("Performing search");
         return new ResultsPage(driver);

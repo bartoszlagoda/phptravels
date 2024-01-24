@@ -17,8 +17,8 @@ public class HotelSearchTest extends BaseTest {
 
         // Wypełnienie pola 'Search by Hotel or City Name'
         List<String> hotelNames = hotelSearchPage.setCity("Dubai")
-                .setTravelDate("29/01/2024","02/02/2024")
-                .setTravellersByInput("2","2")
+                .setTravelDate("29/01/2024", "02/02/2024")
+                .setTravellersByInput("2", "2")
                 .performSearch()
                 .getHotelNames();
 
@@ -33,10 +33,10 @@ public class HotelSearchTest extends BaseTest {
 //        hotelNames.forEach(el -> System.out.println(el));
         hotelNames.forEach(System.out::println); // dla każdego elementu hotelNames wykonaj sout
 //
-        softAssert.assertEquals("Jumeirah Beach Hotel",hotelNames.get(0));
-        softAssert.assertEquals("Oasis Beach Tower",hotelNames.get(1));
-        softAssert.assertEquals("Rose Rayhaan Rotana",hotelNames.get(2));
-        softAssert.assertEquals("Hyatt Regency Perth",hotelNames.get(3));
+        softAssert.assertEquals("Jumeirah Beach Hotel", hotelNames.get(0));
+        softAssert.assertEquals("Oasis Beach Tower", hotelNames.get(1));
+        softAssert.assertEquals("Rose Rayhaan Rotana", hotelNames.get(2));
+        softAssert.assertEquals("Hyatt Regency Perth", hotelNames.get(3));
 
         softAssert.assertAll();
     }
@@ -48,16 +48,16 @@ public class HotelSearchTest extends BaseTest {
         ResultsPage resultsPage = new ResultsPage(driver);
 
         // Wybranie daty przyjazdu i odjazdu
-        hotelSearchPage.setTravelDate("22/02/2024","26/02/2024");
+        hotelSearchPage.setTravelDate("22/02/2024", "26/02/2024");
 
         // Wybranie liczby osób, które mają wyjechać
 
 //        hotelSearchPage.setTravellersByInput("2","3");
-        hotelSearchPage.setTravellersByBtn(3,1);
+        hotelSearchPage.setTravellersByBtn(3, 1);
 
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertEquals(hotelSearchPage.getAdultInput().getAttribute("value"),"3");
-        softAssert.assertEquals(hotelSearchPage.getChildInput().getAttribute("value"),"1");
+        softAssert.assertEquals(hotelSearchPage.getAdultInput().getAttribute("value"), "3");
+        softAssert.assertEquals(hotelSearchPage.getChildInput().getAttribute("value"), "1");
 
         // kliknięcie przycisku Search
         hotelSearchPage.performSearch();
@@ -66,7 +66,7 @@ public class HotelSearchTest extends BaseTest {
         resultsPage.getHotelNames();
 
         softAssert.assertTrue(resultsPage.getHotelNames().size() == 0);
-        softAssert.assertEquals(resultsPage.getHeadingText(),"No Results Found");
+        softAssert.assertEquals(resultsPage.getHeadingText(), "No Results Found");
 
         softAssert.assertAll();
     }
