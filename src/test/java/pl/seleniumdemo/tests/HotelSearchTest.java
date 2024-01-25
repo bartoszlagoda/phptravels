@@ -1,5 +1,8 @@
 package pl.seleniumdemo.tests;
 
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.MediaEntityBuilder;
+import com.aventstack.extentreports.Status;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -15,15 +18,22 @@ public class HotelSearchTest extends BaseTest {
     @Test
     public void searchHotelTest() {
 
+        ExtentTest test = extentReports.createTest("Search Hotel Test");
+
         HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
         ResultsPage resultsPage = new ResultsPage(driver);
 
         // Wypełnienie pola 'Search by Hotel or City Name'
-        List<String> hotelNames = hotelSearchPage.setCity("Dubai")
-                .setTravelDate("29/01/2024", "02/02/2024")
-                .setTravellersByInput("2", "2")
-                .performSearch()
-                .getHotelNames();
+        hotelSearchPage.setCity("Dubai");
+        test.log(Status.PASS, "Setting city 'Dubai' succesfully");
+        hotelSearchPage.setTravelDate("29/01/2024", "02/02/2024");
+        test.log(Status.PASS, "Setting dates done");
+        hotelSearchPage.setTravellersByInput("2", "2");
+        test.log(Status.PASS, "Setting travellers done");
+        hotelSearchPage.performSearch();
+        test.log(Status.PASS, "Performing search done");
+        List<String> hotelNames = resultsPage.getHotelNames();
+
 
         SoftAssert softAssert = new SoftAssert();
 //        softAssert.assertEquals(adults.getAttribute("value"),"2");
@@ -42,6 +52,7 @@ public class HotelSearchTest extends BaseTest {
         softAssert.assertEquals("Hyatt Regency Perth", hotelNames.get(3));
 
         softAssert.assertAll();
+        test.log(Status.PASS,"Assertions passed.");
     }
 
     @Test
