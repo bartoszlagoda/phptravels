@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class ExcelReader {
 
-    public static void readExcelFile(String fileName) throws IOException {
+    public static Object[][] readExcelFile(String fileName) throws IOException {
         // czytanie plików tylko znajdujących się w resources
         File file = new File("src/test/resources/" + fileName);
         FileInputStream inputStream = new FileInputStream(file);
@@ -31,15 +31,22 @@ public class ExcelReader {
         Sheet sheet = workbook.getSheetAt(0);
         // sprawdzenie ile wierszy mamy w pliku excel
         int rowCount = sheet.getLastRowNum();
+        // pobranie pierwszego wiersza i sprawdzenie ile kolumn mamy w pliku
+        int columnCount = sheet.getRow(0).getLastCellNum();
+        // odczyt danych do tablicy dwuwymiarowej o rozmiarach max. il. wierzy x max. il. kolumn
+        Object[][] data = new Object[rowCount][columnCount];
 
         // pomijamy pierwszy wiersz (z nagłówkami)
         for (int i = 1; i <= rowCount; i++) {
             Row row = sheet.getRow(i);
-            // pobranie wartości z pierwszej kolumny
-            System.out.println(row.getCell(0).getStringCellValue());
-            // pobranie wartości z drugiej kolumny
-            System.out.println(row.getCell(1).getStringCellValue());
+
+            for(int j=0; j < columnCount; j++){
+                data[i-1][j] = row.getCell(j).getStringCellValue();
+            }
+
         }
+
+        return data;
     }
 
     public static void main(String[] args) throws IOException {
